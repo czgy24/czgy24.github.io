@@ -1,104 +1,92 @@
+
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" >
+    
+<meta charset="utf-8" >
 
 <title>POJ-1737 Connected Graph解题报告 | gy&#39;s blog</title>
+<meta name="description" content="gy还是不太行">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://czgy24.github.io/favicon.ico?v=1620564047846">
+<link rel="shortcut icon" href="https://czgy24.github.io/favicon.ico?v=1620564107493">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://czgy24.github.io/styles/main.css">
 
 
 
-<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
 
 
 
-    <meta name="description" content="大致题意:
-求n个带标号的点组成的连通图的数目。
-
-对于这种题，我们首先想到设计状态。设fif_ifi​代表i个带标号点组成的联通图的数目。发现直接来做不行，考虑分成两部分：所有方案和不可行方案
-对于所有的方案，非常简单，显然所有的方案一共..." />
-    <meta name="keywords" content="" />
   </head>
   <body>
     <div id="app" class="main">
-
-      <div class="sidebar" :class="{ 'full-height': menuVisible }">
-  <div class="top-container" data-aos="fade-right">
-    <div class="top-header-container">
-      <a class="site-title-container" href="https://czgy24.github.io">
-        <img src="https://czgy24.github.io/images/avatar.png?v=1620564047846" class="site-logo">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://czgy24.github.io">
+        <img class="avatar" src="https://czgy24.github.io/images/avatar.png?v=1620564107493" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://czgy24.github.io">
         <h1 class="site-title">gy&#39;s blog</h1>
       </a>
-      <div class="menu-btn" @click="menuVisible = !menuVisible">
-        <div class="line"></div>
-      </div>
     </div>
-    <div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
+  </div>
+</div>
+
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
       
         
-          <a href="/" class="site-nav">
+          <a href="/" class="menu purple-link">
             首页
           </a>
         
       
         
-          <a href="/archives" class="site-nav">
+          <a href="/archives" class="menu purple-link">
             归档
           </a>
         
       
         
-          <a href="/tags" class="site-nav">
+          <a href="/tags" class="menu purple-link">
             标签
           </a>
         
       
         
-          <a href="/post/about" class="site-nav">
+          <a href="/post/about" class="menu purple-link">
             关于
           </a>
         
       
     </div>
   </div>
-  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
-    <div class="social-container">
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    </div>
-    <div class="site-description">
-      gy还是不太行
-    </div>
-    <div class="site-footer">
-       | <a class="rss" href="https://czgy24.github.io/atom.xml" target="_blank">RSS</a>
-    </div>
-  </div>
-</div>
+</transition>
 
 
-      <div class="main-container">
-        <div class="content-container" data-aos="fade-up">
-          <div class="post-detail">
-            <h2 class="post-title">POJ-1737 Connected Graph解题报告</h2>
-            <div class="post-date">2021-05-09</div>
+      <div class="content-container">
+        <div class="post-detail">
+          
+          <h2 class="post-title">POJ-1737 Connected Graph解题报告</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2021-05-09</span>
             
-            <div class="post-content" v-pre>
-              <h4 id="大致题意">大致题意:</h4>
+          </div>
+          <div class="post-content">
+            <h4 id="大致题意">大致题意:</h4>
 <pre><code>求n个带标号的点组成的连通图的数目。
 </code></pre>
 <p>对于这种题，我们首先想到设计状态。设<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">f_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.10764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>代表i个带标号点组成的联通图的数目。发现直接来做不行，考虑分成两部分：<strong>所有方案和不可行方案</strong><br>
@@ -303,22 +291,37 @@ signed main() {
 using zyf::bign;
 </code></pre>
 
-            </div>
-            
-            
-
-            
-
           </div>
-
         </div>
+
+        
       </div>
+
+      
+
+      <div class="site-footer">
+  <div class="slogan">gy还是不太行</div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+   | <a class="rss" href="https://czgy24.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+
     </div>
+    <script type="application/javascript">
 
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<script type="application/javascript">
-
-AOS.init();
+hljs.initHighlightingOnLoad()
 
 var app = new Vue({
   el: '#app',
@@ -328,8 +331,6 @@ var app = new Vue({
 })
 
 </script>
-
-
 
 
 
